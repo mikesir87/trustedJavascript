@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Info | PGP Signed JavaScript</title>
+  <script type="text/javascript" src="openpgp.js"></script>
+  <script type="text/javascript" src="signedJs.js"></script>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.0/yeti/bootstrap.min.css" />
+</head>
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="index">PGP Signed JavaScript</a>
+    </div>
+
+    <ul class="nav navbar-nav navbar-right">
+      <li class="active"><a href="index">Info</a></li>
+      <li><a href="clean">Clean Demo</a></li>
+      <li><a href="modified">Modified Demo</a></li>
+    </ul>
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+  <div class="container">
+    <div class="col-md-10 col-md-push-1">
+      <h1>Ensuring JavaScript Security</h1>
+      <hr />
+
+      <h2>Rationale/Elevator Pitch</h2>
+      <p>On September 24, 2014, the jQuery website was hacked.  Although the public CDN-hosted libraries weren't modified (every writeup about the hack was very quick to mention that), it does raise the question... <strong>"What if the libraries were modified?"</strong>  If the jQuery CDN were hacked and the library source modified, the millions of websites across the internet that use it would then be exposed to whatever the hacker had in mind.  <strong>How can we detect modifications? prevent modified code execution? protect our users?</strong></p>
+
+      <p>When distributing code in many other platforms, the code is first verified and before execution, verified.  This same concept can apply to JavaScript source as well.  By utilizing PGP code signing, any developer can ensure that the code that is executed on his page is the code he intended, without fail.</p>
+
+      <h2>Quick Demo</h2>
+      <p>I have developed a working prototype that does everything within the page.  I created my own <code>text/x-javascript-*</code> script type, which is discovered by my own JavaScript code.  The code fetches each file, its key and signature (if verification is to be performed), and then executes the code after successful verification.</p>
+      <ul>
+        <li><a href="clean">Clean Demo</a> - uses code that has been signed and unmodified, so will run as expected</li>
+        <li><a href="modified">Modified Demo</a> - uses code that has been modified (added a leading space to the jQuery source)</li>
+      </ul>
+
+      <h2>Next Steps</h2>
+      <p>Now that I have a working prototype, I'd like to work on moving the code deeper into the browser.  The code currently relies on LocalStorage as a hash and key cache, which obviously isn't preferred. Also, code verification would perform much faster running natively, rather than in JavaScript.</p>
+
+      <h2>Contact Me</h2>
+      <p>I can be reached at <a href="mailto:mikesir@vt.edu">mikesir@vt.edu</a>. Learn more about me at <a href="http://mikesir87.io">http://mikesir87.io</a>.</p>
+
+    </div>
+  </div>
+
+</body>
+</html>

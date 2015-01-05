@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Modified Demo | PGP Signed JavaScript</title>
+  <script type="text/javascript" src="openpgp.js"></script>
+  <script type="text/javascript" src="signedJs.js"></script>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.0/yeti/bootstrap.min.css" />
+</head>
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="index">PGP Signed JavaScript</a>
+    </div>
+
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="index">Info</a></li>
+      <li><a href="clean">Clean Demo</a></li>
+      <li class="active"><a href="modified">Modified Demo</a></li>
+    </ul>
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+  <div class="container">
+    <div class="col-md-10 col-md-push-1">
+      <h1>Modified Demo</h1>
+      <p>In this demo, all scripts are signed by my own PGP key. BUT, the jQuery library has been modified.  In this example, I added only a space to the beginning of the file.</p>
+      <p>The page will load each script, perform validations, and then execute ONLY the verified code. You will see console output below.</p>
+      <p>Calls to console.log logs to the display below, as well as the developer console.</p>
+
+      <p><a href="javascript:void(0)" id="clear-localstorage" class="btn btn-primary btn-sm">Clear LocalStorage (key cache)</a></p>
+
+      <h3>Console <small>(see the real Developer console for more details)</small></h3>
+      <pre id="console" style="font-size:10px;"></pre>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    // Override console.log functionality to write on the screen and in the console
+    // Not using the custom script type because we want this to evaluate before anything else
+
+    var consoleDiv = document.getElementById("console");
+    var consoleHolder = console;
+    console = {
+      log : function() {
+        for (var i = 0, l = arguments.length; i < l; i++) {
+          consoleDiv.innerHTML += arguments[i];
+        }
+        consoleDiv.innerHTML += "\n\n";
+        consoleHolder.log.apply(consoleHolder, arguments);
+      }
+    };
+
+    window.onerror = function(e) {
+      console.log(e);
+    }
+
+    document.getElementById("clear-localstorage").addEventListener('click', function() {
+      localStorage.clear();
+      console.log("LocalStorage has been cleared");
+    });
+  </script>
+  <script type="text/x-javascript-signed" src="moment.js" data-key-id="0x8BE936DB7A1F879E"></script>
+  <script type="text/x-javascript-signed" src="angular.min.js" data-key-id="0x8BE936DB7A1F879E"></script>
+  <script type="text/x-javascript-signed" src="jquery-modified.min.js" data-key-id="0x8BE936DB7A1F879E"></script>
+  <script type="text/x-javascript-plain" src="code.js"></script>
+  <script type="text/x-javascript-plain">
+    $(function() { console.log("This log message came from script provided in the page"); });
+  </script>
+</body>
+</html>
