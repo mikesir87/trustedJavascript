@@ -178,7 +178,7 @@ var KeyService = new (function() {
   var getProxyUrl = function(url) {
     var easyUrl = parseURL(url);
     // return 'http://localhost/~mikesir/tests/keyserver.html'; 
-    return "http://crossorigin.me/" + easyUrl.host + easyUrl.pathname + easyUrl.search;
+    return "http://crossorigin.me/" + easyUrl.protocol + "//" + easyUrl.host + easyUrl.pathname + easyUrl.search;
   };
 
   var parseURL = function(url) {
