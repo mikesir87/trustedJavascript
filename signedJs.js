@@ -8,7 +8,7 @@
  *
  * Licensed under the MIT license:
  * http://www.opensource.org/licenses/MIT
- * 
+ *
  * Based on
  * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
  * Digest Algorithm, as defined in RFC 1321.
@@ -107,7 +107,7 @@ var SignedScript = function(srcLocation, keyId) {
     verified = false;
     if (VerifyService.verify(requestedScript.src, this.signature, this.key)) {
       verified = true;
-      var e = eval; 
+      var e = eval;
       e(requestedScript.src.data);
       console.log("-- " + requestedScript.src.location + " loaded successfully");
     }
@@ -172,12 +172,12 @@ var HttpService = new (function() {
 
 
 var KeyService = new (function() {
-  var baseUrl = "http://keyserver.cns.vt.edu/pks/lookup?op=get&search=";
+  var baseUrl = "http://keyserver.cns.vt.edu/pks/lookup?op=get&search=0x";
   var callbacks = {};
 
   var getProxyUrl = function(url) {
     var easyUrl = parseURL(url);
-    // return 'http://localhost/~mikesir/tests/keyserver.html'; 
+    // return 'http://localhost/~mikesir/tests/keyserver.html';
     return "http://crossorigin.me/" + easyUrl.protocol + "//" + easyUrl.host + easyUrl.pathname + easyUrl.search;
   };
 
@@ -223,7 +223,7 @@ var VerifyService = new (function() {
       }
       else
         console.log("-- Stored hash for " + src.location + " didn't verify. Verifying signature now");
-    } 
+    }
 
     var msg = openpgp.message.readSignedContent(src.data, signature.data);
     var publicKey = openpgp.key.readArmored(key.data);
@@ -236,7 +236,7 @@ var VerifyService = new (function() {
       console.log("-- " + src.location + " verified. Storing md5 hash for quicker evaluation in the future");
       localStorage.setItem('script-' + md5(src.location), md5(src.data));
       return true;
-    }    
+    }
   }
 })();
 
@@ -247,14 +247,15 @@ var ScriptService = new (function() {
   var scripts = Array();
 
   this.init = function() {
-    var signedElements = document.querySelectorAll("script[type^='text/x-javascript-']");
+    var signedElements = document.querySelectorAll("x-script");
     for (var i = 0; i < signedElements.length; i++) {
       var element = signedElements[i];
-      var src = element.src;
+      var src = (element.attributes.src != undefined) ? element.attributes.src.value : null;
 
-      if (element.type === 'text/x-javascript-signed') {
-        var keyId = element.dataset.keyId;
-        scripts.push(new SignedScript(element.src, keyId));        
+      // Makes the assumption that only gpg integrity checks are used
+      if (element.attributes.integrity !== undefined) {
+        var keyId = element.attributes.integrity.value.substring("gpg-".length);
+        scripts.push(new SignedScript(element.attributes.src.value, keyId));
       } else if (src != null && src != "") {
         scripts.push(new RemoteScript(src));
       } else {
@@ -298,4 +299,3 @@ var ScriptService = new (function() {
 window.addEventListener('DOMContentLoaded', function () {
   ScriptService.init();
 }, false);
-
