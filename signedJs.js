@@ -82,19 +82,19 @@ var RemoteScript = function(srcLocation) {
 };
 
 
-var SignedScript = function(srcLocation, keyId) {
+var SignedScript = function(srcLocation, signatureLocation, keyFingerprint) {
   var self = this;
   var evaluated = false;
   var verified = null;
   var requestedScript = new RemoteScript(srcLocation);
 
   this.signature = {
-    location : srcLocation + ".asc",
+    location : signatureLocation,
     data : null
   };
 
   this.key = {
-    id : keyId,
+    id : keyFingerprint,
     data : null
   };
 
@@ -254,8 +254,10 @@ var ScriptService = new (function() {
 
       // Makes the assumption that only gpg integrity checks are used
       if (element.attributes.integrity !== undefined) {
-        var keyId = element.attributes.integrity.value.substring("gpg-".length);
-        scripts.push(new SignedScript(element.attributes.src.value, keyId));
+        var integrityInfo = element.attributes.integrity.value.substring("gpg-".length).split(":");
+        var signatureLocation = integrityInfo[0];
+        var keyFingerprint = (integrityInfo.length == 2) ? integrityInfo[1] : null;
+        scripts.push(new SignedScript(element.attributes.src.value, signatureLocation, keyFingerprint));
       } else if (src != null && src != "") {
         scripts.push(new RemoteScript(src));
       } else {
