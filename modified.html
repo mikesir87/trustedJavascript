@@ -64,10 +64,14 @@
       console.log("LocalStorage has been cleared");
     });
   </script>
-  <x-script type="text/javascript" src="moment.js" integrity="gpg-moment.js.asc:59AD7364F6C93350ECE7BADF8BE936DB7A1F879E"></x-script>
-  <x-script type="text/javascript" src="angular.min.js" integrity="gpg-angular.min.js.asc:59AD7364F6C93350ECE7BADF8BE936DB7A1F879E"></x-script>
-  <x-script type="text/javascript" src="jquery-modified.min.js" integrity="gpg-jquery-modified.min.js.asc:59AD7364F6C93350ECE7BADF8BE936DB7A1F879E"></x-script>
-  <x-script type="text/javascript" src="code.js"></x-script>
+  <x-script type="text/javascript" src="js/moment.js" integrity="gpg-js/moment.js.asc:59AD7364F6C93350ECE7BADF8BE936DB7A1F879E"></x-script>
+  <x-script type="text/javascript" src="js/angular.min.js" integrity="gpg-angular.min.js.asc:59AD7364F6C93350ECE7BADF8BE936DB7A1F879E"></x-script>
+  <x-script type="text/javascript" src="js/jquery-modified.min.js" integrity="gpg-jquery-modified.min.js.asc:59AD7364F6C93350ECE7BADF8BE936DB7A1F879E"></x-script>
+
+  <!-- File without a signature - runs a console.log -->
+  <x-script type="text/javascript" src="js/code.js"></x-script>
+
+  <!-- Inline JavaScript - adds a console.log -->
   <x-script type="text/javascript">
     $(function() { console.log("This log message came from script provided in the page"); });
   </x-script>
